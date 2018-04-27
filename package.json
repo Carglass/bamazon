@@ -1,0 +1,24 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "a concurrent to amazon",
+  "main": "bamazonCustomer.js",
+  "dependencies": {
+    "inquirer": "^5.2.0",
+    "mysql": "^2.15.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Carglass/bamazon.git"
+  },
+  "author": "Carglass",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Carglass/bamazon/issues"
+  },
+  "homepage": "https://github.com/Carglass/bamazon#readme"
+}
