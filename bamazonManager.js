@@ -59,7 +59,7 @@ function afterConnection() {
       } else if (answers["user-function"] === "add-new-product") {
         addNewProduct();
       } else if (answers["user-function"] === "exit") {
-        exit();
+        process.exit();
       }
     });
 }
@@ -147,8 +147,45 @@ function restockProduct() {
       });
     }
   );
+  afterConnection();
 }
 
-function addNewProduct() {}
-
-function exit() {}
+function addNewProduct() {
+  inquirer
+    .prompt([
+      {
+        name: "product_name",
+        message: "What is the new product?"
+      },
+      {
+        name: "department_name",
+        message: "In which department will it be available?"
+        // TODO update with a list from the departments table in the end?
+      },
+      {
+        name: "price",
+        message: "What is the price of this product?"
+      },
+      {
+        name: "stock_quantity",
+        message: "How many are there in the first batch?"
+      }
+    ])
+    .then(answers => {
+      connection.query(
+        "INSERT INTO products SET ?",
+        {
+          product_name: answers.product_name,
+          department_name: answers.department_name,
+          price: parseFloat(answers.price),
+          stock_quantity: parseInt(answers.stock_quantity)
+        },
+        function(err) {
+          if (err) throw err;
+          console.log("done");
+        }
+      );
+      console.log(answers);
+    });
+  afterConnection();
+}
