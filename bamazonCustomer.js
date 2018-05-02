@@ -42,16 +42,22 @@ function getClientOrder() {
       // Use user feedback for... whatever!!
       console.log(answers);
       connection.query(
-        "SELECT item_id, stock_quantity, price FROM products WHERE item_id = " +
+        "SELECT item_id, stock_quantity, price, product_sales FROM products WHERE item_id = " +
           answers.item,
         function(err, res) {
           if (err) throw err;
-          for ({ item_id, stock_quantity, price } of res) {
+          for ({ item_id, stock_quantity, price, product_sales } of res) {
             console.log(`item ${item_id}: ${stock_quantity}`);
             if (answers.quantity <= stock_quantity) {
               connection.query(
-                `UPDATE products SET stock_quantity = ${stock_quantity -
-                  answers.quantity} WHERE item_id = ${item_id};`,
+                `UPDATE products SET ? WHERE ?;`,
+                [
+                  {
+                    stock_quantity: stock_quantity - answers.quantity,
+                    product_sales: product_sales + answers.quantity * price
+                  },
+                  { item_id: item_id }
+                ],
                 function() {
                   console.log(`It cost you $${answers.quantity * price}`);
                 }
