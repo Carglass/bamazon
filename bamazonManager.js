@@ -74,7 +74,6 @@ function viewProducts() {
       console.log("-----------------------------------");
     }
   });
-  afterConnection();
 }
 
 function viewLowInventory() {
@@ -91,7 +90,6 @@ function viewLowInventory() {
     }
     console.log("*******************************");
   });
-  afterConnection();
 }
 
 function restockProduct() {
@@ -125,7 +123,6 @@ function restockProduct() {
           { item_id: answers["item-to-restock"] },
           function(err, res) {
             if (err) throw err;
-            console.log(res);
             connection.query(
               "UPDATE products SET ? WHERE ?",
               [
@@ -138,16 +135,13 @@ function restockProduct() {
                   item_id: answers["item-to-restock"]
                 }
               ],
-              function() {
-                console.log("done");
-              }
+              function() {}
             );
           }
         );
       });
     }
   );
-  afterConnection();
 }
 
 function addNewProduct() {
@@ -187,5 +181,4 @@ function addNewProduct() {
       );
       console.log(answers);
     });
-  afterConnection();
 }
