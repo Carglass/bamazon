@@ -28,11 +28,11 @@ function afterConnection() {
         choices: [
           {
             name: "View Products Sales by Department",
-            value: "view-products"
+            value: "view-products-sales-by-dpt"
           },
           {
             name: "Add a Department",
-            value: "view-low-inventory"
+            value: "add-department"
           },
           {
             name: "Exit",
@@ -42,12 +42,28 @@ function afterConnection() {
       }
     ])
     .then(answers => {
-      if (answers["user-function"] === "view-products") {
-        viewProducts();
-      } else if (answers["user-function"] === "view-low-inventory") {
-        viewLowInventory();
+      if (answers["user-function"] === "view-products-sales-by-dpt") {
+        viewProductsSalesByDepartment();
+      } else if (answers["user-function"] === "add-department") {
+        createDepartment();
       } else if (answers["user-function"] === "exit") {
         process.exit();
       }
     });
+}
+
+function viewProductsSalesByDepartment() {
+  connection.query(
+    "SELECT departments.department_id, departments.department_name, SUM(products.product_sales) AS product_Sales, departments.over_head_costs FROM departments LEFT JOIN products ON departments.department_name = products.department_name GROUP BY department_name ORDER BY department_id;",
+    function(err, res) {
+      if (err) throw err;
+      console.log(res);
+    }
+  );
+  afterConnection();
+}
+
+function createDepartment() {
+  console.log("create a department");
+  afterConnection();
 }
